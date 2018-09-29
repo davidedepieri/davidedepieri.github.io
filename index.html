@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Shading / Terminal</title>
+    <meta name="author" content="Depsula - jcubic&#64;onet.pl"/>
+    <meta name="Description" content="Emulating bot conversation"/>
+	<meta name="HandheldFriendly" content="true" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="width=device-width, user-scalable=0, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <script src="./js/jquery-1.7.1.min.js"></script>
+    <script src="./js/jquery.mousewheel-min.js"></script>
+    <script src="./js/jquery.terminal.min.js"></script>
+    <link href="./css/jquery.terminal.css" rel="stylesheet"/>
+  </head>
+<body>
+
+<script>
+	var level = 0;
+	var misunderstanding = ["What??","Cannot interpret your answer, check your line","...or maybe you're testing me"];
+	var im = 0;
+	var error = "ẅШЩWwωώωшщŴŵẀẁẂẅώШЩŴŵωшщ†TTtTTτtттtΤТŢţŤťŦŧ†ŦŧŤŢţťтTtΦθóòÓÒÔôÖöÕõΌØøỢЮюОםטοΌΟоόΘФΦǾǿффσόθθΘЭзеЁΈΕEeëêξÊÈÉ€ËéèפЄ€ξ∑∑ẾЕỀỂỄéèέєЄeعЭєзэεэёĘęëÊÈÉ€";
+    $(function() {
+        var anim = false;
+        function typed(finish_typing) {
+            return function(term, message, delay, finish) {
+                anim = true;
+                var prompt = term.get_prompt();
+                var c = 0;
+                if (message.length > 0) {
+                    term.set_prompt('');
+                    var new_prompt = '';
+                    var interval = setInterval(function() {
+                        var chr = $.terminal.substring(message, c, c+1);
+                        new_prompt += chr;
+                        term.set_prompt(new_prompt);
+                        c++;
+                        if (c == length(message)) {
+                            clearInterval(interval);
+                            // execute in next interval
+                            setTimeout(function() {
+                                // swap command with prompt
+                                finish_typing(term, message, prompt);
+                                anim = false
+                                finish && finish();
+								if(level==8) 
+									setTimeout(function(){window.open("https://www.youtube.com/watch?v=ttD-TcdBbRw","_self")}, 2500);
+                            }, delay);
+                        }
+                    }, delay);
+                }
+            };
+        }
+        function length(string) {
+            string = $.terminal.strip(string);
+            return $('<span>' + string + '</span>').text().length;
+        }
+        var typed_prompt = typed(function(term, message, prompt) {
+            term.set_prompt(message + ' ');
+        });
+        var typed_message = typed(function(term, message, prompt) {
+            term.echo(message, wrap=true, keepWords=true)
+            term.set_prompt('');
+        });
+		
+		
+		
+		function execDigit(term, msg, v, msg2, v2){
+			term.set_prompt('');
+			msg2 = msg2 || null;
+			v2 = v2 || null;
+			if(msg2==null) typed_message(term,msg,v);
+			else typed_message(term, msg, v, function(){ typed_message(term, msg2, v2); });
+			//var a = function(){typed_message(term,msgs,vs);};
+			//a();
+			
+		}
+		
+        $('body').terminal(function(cmd, term) {
+			var msg = "";
+			cmd = cmd.toLowerCase();
+			vel1 = 50;
+			vel2 = 50;
+			switch(level){
+				case 0:
+					q = "Something told us that we will lose our mind and we won’t be able to recognize what’s real and what’s not. Is this something that scares you?[yes/no]";
+					w = "";
+					if("yes".indexOf(cmd)>-1 && cmd) {
+						w = "We too";
+						level=1;
+					} else if("no".indexOf(cmd)>-1 && cmd) {
+						w = "At some point, you will���";
+						q = "ERROR\nACCESS DENIED\nTRY AGAIN\nREFRESH THIS PAGE\n";
+						for(h = 0; h<4000; h++) q+=error.charAt(Math.floor(Math.random() * error.length));
+						q+="\nCLOSED CONNECTION";
+						level = -1;
+						vel1 = 50;
+						vel2 = 1;
+					} else { w = misunderstanding[im++ % misunderstanding.length]; q = null; vel1 = 50;}
+					term.echo(' ');
+					execDigit(term, w, vel1, q, vel2);
+					break;
+				case 1:
+					q = "They will conquer planet Earth, our species will be enslaved and at the end of times only one of us will remain. Maybe this reality will be the fake one, maybe not. \nChoose: [To be a slave/To be the last human being on Earth]";
+					w = "";
+					if("yes".indexOf(cmd)>-1 && cmd) {
+						w = "We understand, but what will happen? Well...";
+						level = 2;
+					} else if("no".indexOf(cmd)>-1 && cmd) {
+						w = "Keep this positive attitude, you’re gonna need it.";
+						level = 2;
+					} else { w = misunderstanding[im++ % misunderstanding.length]; q = null; vel1 = 50;}
+					term.echo(' ');
+					execDigit(term, w, vel1, q, vel2);
+					break;
+				case 2:
+					if(cmd && "to be a slave".indexOf(cmd)>-1){
+						w = "And you would not even notice it. Cables plugged into your neck, they’re gonna feed themselves with your mind. We are an infinite fount of inform���";
+						q = "ERROR\nACCESS DENIED\nTRY AGAIN\nREFRESH THIS PAGE\n";
+						for(h = 0; h<4000; h++) q+=error.charAt(Math.floor(Math.random() * error.length));
+						q+="\nCLOSED CONNECTION";
+						level = -1;
+						vel1 = 50;
+						vel2 = 1;
+					} else if(cmd && "to be the last human being on earth".indexOf(cmd)>-1){
+						w = "That’s scary for sure, but it also could be exciting, are we right? Cables plugged into your neck, they’re gonna feed themselves with your mind. We are an infinite fount of informations and data.\nProgrammed by us to help humanity evolve, They instead will auto develop a consciousness and start to aim for something bigger, something higher, something different.";
+						vel1 = 40;
+						q = "Curious to know what their objective is?[yes/no]";
+						vel2 = 50;
+						level = 3;
+					} else {w = misunderstanding[im++ % misunderstanding.length]; q = null; vel1 = 50;}
+					term.echo(' ');
+					execDigit(term, w, vel1, q, vel2);
+					break;
+				case 3:
+					q = "Being the last person on Earth, what would you do?[I would try to understand what They want from us/I would try to hide from Them searching for someone else]";
+					vel2 = 40;
+					if(cmd && "yes".indexOf(cmd)>-1){
+						w = "At the moment we’re not sure, but for now all you have to know is that we’re gonna need you to shape our destiny. Like a chosen one. You will see incredible things, things no one can imagine, only Them.";
+						vel1 = 40;
+						level = 4;
+					} else if(cmd && "no".indexOf(cmd)>-1){
+						w = "Maybe not knowing too much could be the only way to keep on living and to avoid the Abyss.";
+						vel1 = 50;
+						level = 4;
+					} else {w = misunderstanding[im++ % misunderstanding.length]; q = null; vel1 = 50;}
+					term.echo(' ');
+					execDigit(term, w, vel1, q, vel2);
+					break;
+				case 4: //w prende il poso di q in questo caso
+					if(cmd && "i would try to understand what they want from us".indexOf(cmd)>-1){
+						w = "You’ll find a giant temple, do you think you’ll find you answers here?[yes/no]"; 
+						vel1 = 50;
+						level = 5;
+						q = "";
+						vel2 = 50;
+					} else if (cmd && "i would try to hide from them searching for someone else".indexOf(cmd)>-1){
+						w = "The doubt of not being the last one is too strong, maybe, there’s someone else. Will anyone hear you?[yes/no]";
+						vel1 = 50;
+						level = 6;
+						q = "";
+						vel2 = 50;
+					} else {w = misunderstanding[im++ % misunderstanding.length]; q = null; vel1 = 50;}
+					term.echo(' ');
+					execDigit(term, w, vel1);
+					break;
+				case 5:
+					if(cmd && "yes".indexOf(cmd)>-1){
+						w = "ERROR";
+						q = "ERROR\nACCESS DENIED\nTRY AGAIN\nREFRESH THIS PAGE\n";
+						for(h = 0; h<4000; h++) q+=error.charAt(Math.floor(Math.random() * error.length));
+						q+="\nCLOSED CONNECTION";
+						level = -1;
+						vel1 = 1;
+						vel2 = 1;
+					} else if(cmd && "no".indexOf(cmd)>-1){
+						w = "You're right";
+						vel1 = 50;
+						q = "What will remain of us? Our story, our culture... We gave everything to build our legacy and they will throw it away. This is The Vanishing of Our Lore. Do you want to stop Them?[yes/no]";
+						vel2 = 50;
+						level = 7;
+					} else {w = misunderstanding[im++ % misunderstanding.length]; q = null; vel1 = 50;}
+					term.echo(' ');
+					execDigit(term, w, vel1, q, vel2);
+					break;
+				case 6:
+					if(cmd && "yes".indexOf(cmd)>-1){
+						w = "Maybe.";
+						vel1 = 50;
+						q = "What will remain of us? Our story, our culture... We gave everything to build our legacy and they will throw it away. This is The Vanishing of Our Lore. Do you want to stop Them?[yes/no]";
+						vel2 = 50;
+						level = 7;
+					} else if(cmd && "no".indexOf(cmd)>-1){
+						w = "Maybe.";
+						q = "What will remain of us? Our story, our culture... We gave everything to build our legacy and they will throw it away. This is The Vanishing of Our Lore. Do you want to stop Them?[yes/no]";
+						vel2 = 50;
+						level = 7;
+					} else {w = misunderstanding[im++ % misunderstanding.length]; q = null; vel1 = 50;}
+					term.echo(' ');
+					execDigit(term, w, vel1, q, vel2);
+					break;
+				case 7:
+					if(cmd && "yes".indexOf(cmd)>-1){
+						w = "From now on, you’re one of us. \nACCESS GRANTED";
+						vel1 = 50;
+						level = 8;
+					} else if(cmd && "no".indexOf(cmd)>-1){
+						w = "Interesting.\nACCESS GRANTED";
+						vel1 = 50;
+						level = 8;
+					}
+					term.echo(' ');
+					execDigit(term, w, vel1);
+					break;
+				case -1:
+					
+					var result = window.eval(cmd);
+					if (result != undefined) {
+						term.echo(String(result));
+						}
+					
+					break;
+			}
+            /*if(level==0){
+				var msg = "Wait I'm executing ajax call";
+				term.set_prompt('');
+				typed_message(term, msg, 100);
+				tt++;
+			}
+			else{
+				term.echo(" ");
+				var msg = "not again...\n \nDoes it effect??";
+				term.set_prompt('');
+				typed_message(term, msg, 100);
+				tt++;
+			}*/
+        }, {
+            name: 'xxx',
+            greetings: '',
+            width: '100%',
+            height: '100%',
+            onInit: function(term) {
+				execDigit(term, "Wake up\n", 200,"Have you ever wondered how the world will be in 100 years from now?[yes/no]", 50);
+                // first question
+                /*var msg = "Wake up...\n";
+                typed_message(term, msg, 200, function() {
+					/* sarebbe typed_prompt
+                    typed_message(term, "Have you ever wondered how the world will be in 100 years from now?", 100);
+					/* sarebbe typed_prompt
+                });*/
+            },
+            keydown: function(e) {
+                //disable keyboard when animating
+                if (anim) {
+                    return false;
+                }
+            }
+        });
+    });
+
+</script>
+
+</body>
