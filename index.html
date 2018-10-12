@@ -90,7 +90,7 @@
 			switch(level){
 				case 0:
 					q = "Hai cancellato il mio numero in preda ad un raptus di rabbia?[s,n]";
-					w = "";
+					w = " ";
 					if("s".indexOf(cmd)>-1 && cmd) {
 						w = "Aaaah, Apple. Da quando il buon Steve non c'è più sono in caduta libera. Tuttavia stai mentendo. Non dire altre puttanate da qua in poi.";
 						level=1;
@@ -171,7 +171,7 @@
 						level = -2; //foto di claudio
 						vel1 = 50;
 					} else if(cmd && "no".indexOf(cmd)>-1){
-						w = "";
+						w = " ";
 						vel1 = 50;
 						q = null;
 						level = 6;
@@ -181,8 +181,8 @@
 					break;
 				case 6:
 					if(cmd && "s".indexOf(cmd)>-1){
-						w = "";
-						vel1 = 50;
+						w = "Ok :(";
+						vel1 = 200;
 						q = null;
 						level = -4; //foto triste
 					} else if(cmd && "n".indexOf(cmd)>-1){
